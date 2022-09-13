@@ -1,0 +1,19 @@
+name: CI Build
+on: 
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  linux:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Install Dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y cmake g++ libvulkan-dev
+    - uses: actions/checkout@v2
+    - name: Build
+      run: |
+        cmake -Bbuild -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wundef" .
+        cmake --build build -- -j 2
